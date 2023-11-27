@@ -1,0 +1,12 @@
+# Vscode
+.vscode/
+
+# Build
+**/build/ 
+
+# Dependency directories
+**/node_modules/
+**/pacakge-lock.json
+
+# dotenv environment variable files
+.env
