@@ -6,6 +6,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/station", routers.stationRouter);
+app.use("/journey", routers.journeyRouter);
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
