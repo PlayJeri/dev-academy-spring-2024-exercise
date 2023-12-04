@@ -9,7 +9,11 @@ export const getJourneyStats = async (req: Request, res: Response) => {
         const response = await db.query(
             "SELECT COUNT(*) AS journeyCount, SUM(distance) AS totalDistance FROM journey"
         );
-        const data: JourneyStats = response.rows[0];
+        const row = response.rows[0];
+        const data: JourneyStats = {
+            totalDistance: row.totaldistance,
+            numberOfJourneys: row.journeycount,
+        };
         res.json(data);
     } catch (error) {
         console.error("Error in getJourneyStats", error);
