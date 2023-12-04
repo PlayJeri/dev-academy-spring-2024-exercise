@@ -1,7 +1,15 @@
 import express from "express";
 import routers from "./routers";
+import cors from "cors";
 
 const app = express();
+
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    })
+);
 
 app.use(express.json());
 
