@@ -4,6 +4,11 @@ import { JourneyStats } from "../types/Journey";
 
 const db = pool.pool;
 
+/**
+ * Get journey statistics
+ *
+ * @returns {JourneyStats} - total number of journeys and total distance of all journeys
+ */
 export const getJourneyStats = async (req: Request, res: Response) => {
     try {
         const response = await db.query(
