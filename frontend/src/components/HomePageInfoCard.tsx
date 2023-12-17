@@ -10,14 +10,17 @@ export const HomePageInfoCard = () => {
                 alt="city bikes"
             />
             <p className="p-8">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Expedita reiciendis labore nihil, vel vitae, animi distinctio
-                earum ab, accusantium beatae nostrum sit consectetur deserunt.
-                Consectetur quo adipisci totam tenetur obcaecati. Lorem ipsum
-                dolor sit amet consectetur adipisicing elit. Iusto nostrum illo
-                doloremque sequi, eveniet aliquam molestias cumque ullam
-                incidunt, hic saepe veritatis nihil, rerum natus ducimus aperiam
-                atque at fugit?
+                Welcome to our City Bike service! 
+                We're proud to offer a convenient, 
+                eco-friendly transportation option 
+                that's loved by thousands of happy customers. 
+                With hundreds of stations scattered across the city, 
+                you're never far from your next ride. 
+                Our bikes are not only a green alternative 
+                that contributes to a healthier environment, 
+                but they also provide a fun and efficient way to navigate the city. 
+                Join us in making our city cleaner, greener, and more connected. 
+                Enjoy the ride!
             </p>
         </div>
     );
