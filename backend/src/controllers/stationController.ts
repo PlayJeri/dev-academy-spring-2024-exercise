@@ -12,7 +12,9 @@ const db = pool.pool;
 export const getAllStations = async (req: Request, res: Response) => {
     try {
         const result = await db.query(
-            `SELECT * FROM station ORDER BY station_name ${req.query.order}`
+            req.query.order
+                ? `SELECT * FROM station ORDER BY station_name ${req.query.order}`
+                : "SELECT * FROM station"
         );
 
         const data: StationData[] = result.rows.map((row) => ({
