@@ -1,5 +1,5 @@
 export type StationData = {
-    stationId: number;
+    id: number;
     name: string;
     address: string;
     coordinates: {
