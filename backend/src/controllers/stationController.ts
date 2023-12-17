@@ -41,32 +41,31 @@ export const getStationById = async (req: Request, res: Response) => {
     try {
         const stationId = req.params.id;
 
-        const stationData = await db.query(
-            "SELECT * FROM station WHERE id = $1",
-            [stationId]
-        );
+        const stationData = db.query("SELECT * FROM station WHERE id = $1", [
+            stationId,
+        ]);
 
-        const numberOfStartedJourneys = await db.query(
+        const numberOfStartedJourneys = db.query(
             "SELECT COUNT(*) FROM journey WHERE departure_station_id = $1",
             [stationId]
         );
 
-        const numberOfEndedJourneys = await db.query(
+        const numberOfEndedJourneys = db.query(
             "SELECT COUNT(*) FROM journey WHERE return_station_id = $1",
             [stationId]
         );
 
-        const avgStartedJourneyDistance = await db.query(
+        const avgStartedJourneyDistance = db.query(
             "SELECT AVG(distance) FROM journey WHERE departure_station_id = $1",
             [stationId]
         );
 
-        const avgStartedJourneyDuration = await db.query(
+        const avgStartedJourneyDuration = db.query(
             "SELECT AVG(duration) FROM journey WHERE departure_station_id = $1",
             [stationId]
         );
 
-        const topThreeDestinations = await db.query(
+        const topThreeDestinations = db.query(
             `
             SELECT station.station_name, journey.return_station_id, COUNT(*)
             FROM journey
@@ -79,7 +78,7 @@ export const getStationById = async (req: Request, res: Response) => {
             [stationId]
         );
 
-        const peakTimes = await db.query(
+        const peakTimes = db.query(
             `
             SELECT EXTRACT(HOUR FROM departure_date_time) AS hour, COUNT(*)
             FROM journey
@@ -90,30 +89,52 @@ export const getStationById = async (req: Request, res: Response) => {
             [stationId]
         );
 
+        const [
+            stationDataResult,
+            numberOfStartedJourneysResult,
+            numberOfEndedJourneysResult,
+            avgStartedJourneyDistanceResult,
+            avgStartedJourneyDurationResult,
+            topThreeDestinationsResult,
+            peakTimesResult,
+        ] = await Promise.all([
+            stationData,
+            numberOfStartedJourneys,
+            numberOfEndedJourneys,
+            avgStartedJourneyDistance,
+            avgStartedJourneyDuration,
+            topThreeDestinations,
+            peakTimes,
+        ]);
+
         const data: StationDetails = {
             stationData: {
-                stationId: stationData.rows[0].id,
-                name: stationData.rows[0].station_name,
-                address: stationData.rows[0].station_address,
+                stationId: stationDataResult.rows[0].id,
+                name: stationDataResult.rows[0].station_name,
+                address: stationDataResult.rows[0].station_address,
                 coordinates: {
-                    x: parseFloat(stationData.rows[0].coordinate_x),
-                    y: parseFloat(stationData.rows[0].coordinate_y),
+                    x: parseFloat(stationDataResult.rows[0].coordinate_x),
+                    y: parseFloat(stationDataResult.rows[0].coordinate_y),
                 },
             },
-            journeysStarted: parseInt(numberOfStartedJourneys.rows[0].count),
-            journeysEnded: parseInt(numberOfEndedJourneys.rows[0].count),
+            journeysStarted: parseInt(
+                numberOfStartedJourneysResult.rows[0].count
+            ),
+            journeysEnded: parseInt(numberOfEndedJourneysResult.rows[0].count),
             avgJourneyDistance: Math.round(
-                avgStartedJourneyDistance.rows[0].avg
+                avgStartedJourneyDistanceResult.rows[0].avg
             ),
             avgJourneyDuration: Math.round(
-                avgStartedJourneyDuration.rows[0].avg
+                avgStartedJourneyDurationResult.rows[0].avg
             ),
-            topThreeDestinations: topThreeDestinations.rows.map((row) => ({
-                stationId: row.return_station_id,
-                stationName: row.station_name,
-                numberOfJourneys: parseInt(row.count),
-            })),
-            peakTimes: peakTimes.rows.map((row) => ({
+            topThreeDestinations: topThreeDestinationsResult.rows.map(
+                (row) => ({
+                    stationId: row.return_station_id,
+                    stationName: row.station_name,
+                    numberOfJourneys: parseInt(row.count),
+                })
+            ),
+            peakTimes: peakTimesResult.rows.map((row) => ({
                 hour: parseInt(row.hour),
                 journeysStarted: parseInt(row.count),
             })),
