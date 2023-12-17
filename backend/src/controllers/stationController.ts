@@ -11,10 +11,12 @@ const db = pool.pool;
  */
 export const getAllStations = async (req: Request, res: Response) => {
     try {
-        const result = await db.query("SELECT * FROM station");
+        const result = await db.query(
+            `SELECT * FROM station ORDER BY station_name ${req.query.order}`
+        );
 
         const data: StationData[] = result.rows.map((row) => ({
-            stationId: row.id,
+            id: row.id,
             name: row.station_name,
             address: row.station_address,
             coordinates: {
@@ -109,7 +111,7 @@ export const getStationById = async (req: Request, res: Response) => {
 
         const data: StationDetails = {
             stationData: {
-                stationId: stationDataResult.rows[0].id,
+                id: stationDataResult.rows[0].id,
                 name: stationDataResult.rows[0].station_name,
                 address: stationDataResult.rows[0].station_address,
                 coordinates: {
