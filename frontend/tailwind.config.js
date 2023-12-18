@@ -4,5 +4,14 @@ export default {
     theme: {
         extend: {},
     },
-    plugins: [],
+    plugins: [
+        function ({ addUtilities }) {
+            const linkHover = {
+                ".linkHover": {
+                    transition: "all 0.2s ease-in-out",
+                },
+            };
+            addUtilities(linkHover, ["hover"]);
+        },
+    ],
 };
