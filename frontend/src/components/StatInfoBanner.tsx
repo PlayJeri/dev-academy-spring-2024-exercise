@@ -28,7 +28,7 @@ interface StatInfoBannerProps {
 
 export const StatInfoBanner: React.FC<StatInfoBannerProps> = ({ stats }) => {
     return (
-        <div className="flex w-full py-6 items-center justify-around bg-yellow-500 text-neutral-800">
+        <div className="flex w-full py-4 items-center justify-around bg-yellow-500 text-neutral-800">
             <StatItem
                 Icon={LocationIcon}
                 label={"Stations"}
