@@ -14,7 +14,9 @@ export const StationDetailCard: React.FC<StationDetailCardProps> = ({
             <React.Fragment key={title}>
                 <h1 className="text-3xl font-bold">{title}</h1>
                 {values.map((value) => (
-                    <h2 className="my-auto text-xl">{value}</h2>
+                    <h2 key={value} className="my-auto text-xl">
+                        {value}
+                    </h2>
                 ))}
             </React.Fragment>
         </div>
