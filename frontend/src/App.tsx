@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { AllStationsPage } from "./pages/AllStationsPage";
 import { NavBar } from "./components/NavBar";
+import { StationPage } from "./pages/StationPage";
 
 export default function App() {
     return (
@@ -10,6 +11,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/stations" element={<AllStationsPage />} />
+                <Route path="/station/:stationId" element={<StationPage />} />
             </Routes>
         </BrowserRouter>
     );
