@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const MobileNavBar = () => {
     return (
-        <div className="flex flex-col sm:hidden items-center w-full gap-4 bg-blue-600">
+        <div className="sticky top-[64px] flex flex-col sm:hidden items-center w-full gap-4 bg-blue-600">
             <input
                 className="font-semibold text-slate-600  mt-4 w-3/4 rounded-md border-2 p-1 border-gray-300 focus:outline-none focus:border-blue-700"
                 type="text"
