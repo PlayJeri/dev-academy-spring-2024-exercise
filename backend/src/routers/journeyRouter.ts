@@ -5,5 +5,6 @@ const router = Router();
 const controller = controllers.journey;
 
 router.get("/stats", controller.getJourneyStats);
+router.get("/all", controller.getAllJourneys);
 
 export { router as journeyRouter };
