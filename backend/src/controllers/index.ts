@@ -1,5 +1,5 @@
 import { getAllStations, getStationById } from "./stationController";
-import { getJourneyStats } from "./journeyControllers";
+import { getJourneyStats, getAllJourneys } from "./journeyControllers";
 
 export default {
     station: {
@@ -8,5 +8,6 @@ export default {
     },
     journey: {
         getJourneyStats,
+        getAllJourneys,
     },
 };
