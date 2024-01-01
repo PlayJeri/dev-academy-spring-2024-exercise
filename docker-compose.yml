@@ -31,4 +31,8 @@ services:
       - 5173:5173
     depends_on:
       - express
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
       
