@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { StationData, StationDetails } from "../types/Station";
+import redisClient from "../redis";
 import pool from "../db";
 
 const db = pool.pool;
@@ -11,6 +12,15 @@ const db = pool.pool;
  */
 export const getAllStations = async (req: Request, res: Response) => {
     try {
+        const cacheKey = "stations";
+        const cachedStations = await redisClient.get(cacheKey);
+
+        if (cachedStations) {
+            console.log("using cached stations");
+            return res.status(200).json(JSON.parse(cachedStations));
+        }
+        console.log("using db");
+
         const result = await db.query(
             `SELECT * FROM station ORDER BY station_name DESC`
         );
@@ -26,6 +36,13 @@ export const getAllStations = async (req: Request, res: Response) => {
         }));
 
         res.status(200).json(data);
+
+        await redisClient.set(
+            cacheKey,
+            JSON.stringify(data),
+            "EX",
+            60 * 60 * 24
+        ); // 24 hours
     } catch (error) {
         console.error("Error getting all stations", error);
         res.status(500).send("Internal server error");
