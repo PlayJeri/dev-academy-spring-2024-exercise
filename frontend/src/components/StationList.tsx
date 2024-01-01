@@ -2,10 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { StationData } from "../types";
 import { Link } from "react-router-dom";
+import { PaginationButton } from "./PaginationButton";
 
 type StationListProps = {
     stations: StationData[];
-    setStations: React.Dispatch<React.SetStateAction<StationData[]>>;
+    setStations: React.Dispatch<React.SetStateAction<StationData[] | null>>;
 };
 
 export const StationList: React.FC<StationListProps> = ({
@@ -32,44 +33,38 @@ export const StationList: React.FC<StationListProps> = ({
         setStations([...stations].reverse());
     };
 
+    const renderStationLink = (station: StationData) => {
+        return (
+            <Link to={`/station/${station.id}`}>
+                <div
+                    key={station.id}
+                    className="p-4 bg-yellow-500 rounded-xl shadow"
+                >
+                    <h2 className="font-bold text-xl text-neutral-800">
+                        {station.name}
+                    </h2>
+                    <p className="text-neutral-700">{station.address}</p>
+                </div>
+            </Link>
+        );
+    };
+
     return (
         <>
             <div className="py-8 grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[1000px] mx-auto px-4">
-                {currentItems.map((station) => (
-                    <Link to={`/station/${station.id}`}>
-                        <div
-                            key={station.id}
-                            className="p-4 bg-blue-600 rounded shadow"
-                        >
-                            <h2 className="font-bold text-xl text-white">
-                                {station.name}
-                            </h2>
-                            <p className="text-white">{station.address}</p>
-                        </div>
-                    </Link>
-                ))}
+                {currentItems.map(renderStationLink)}
             </div>
             <div className="flex justify-center gap-5 py-8">
-                <button
-                    className={`${
-                        currentPage === 1 ? "bg-gray-600" : "bg-blue-500"
-                    } text-white px-4 py-2 rounded shadow`}
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                >
-                    Previous
-                </button>
-                <button
-                    className={`${
-                        currentPage === totalPages
-                            ? "bg-gray-600"
-                            : "bg-blue-500"
-                    } text-white px-4 py-2 rounded shadow`}
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
+                <PaginationButton
+                    condition={currentPage === 1}
+                    buttonText="Previous"
+                    handleClick={() => handlePageChange(currentPage - 1)}
+                />
+                <PaginationButton
+                    condition={currentPage === totalPages}
+                    buttonText="Next"
+                    handleClick={() => handlePageChange(currentPage + 1)}
+                />
                 <button
                     className="bg-slate-100 text-slate-800 px-4 py-2 rounded shadow"
                     onClick={() => handleOrderChange()}

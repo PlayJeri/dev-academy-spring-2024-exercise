@@ -1,23 +1,23 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { StationList } from '../components/StationList'
-import { StationData } from '../types/'
+import { StationList } from "../components/StationList";
+import { StationData } from "../types/";
+
+import { useFetch } from "../hooks/useFetch";
 
 export const AllStationsPage = () => {
-    const [stations, setStations] = useState<StationData[]>([])
+    const {
+        data: stations,
+        setData: setStations,
+        isLoading,
+        error,
+    } = useFetch<StationData[] | null>("/station");
 
-    useEffect(() => {
-        const fetchStations = async () => {
-            const stations = await axios.get(`/station`)
-            setStations(stations.data)
-        }
-
-        fetchStations()
-    }, [])
-
-  return (
-    <div>
-        <StationList stations={stations} setStations={setStations} />
-    </div>
-  )
-}
+    return (
+        <div>
+            {isLoading && <p>Loading...</p>}
+            {error && <p>{error.message}</p>}
+            {stations && (
+                <StationList stations={stations} setStations={setStations} />
+            )}
+        </div>
+    );
+};

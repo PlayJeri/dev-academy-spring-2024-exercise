@@ -1,23 +1,17 @@
-import { useEffect, useState } from "react";
 import { StationDetails } from "../types";
 import { StationDetailCard } from "../components/StationDetailCard";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { PeakTimesChart } from "../components/PeakTimesChart";
 import { StationLocationMap } from "../components/StationLocationMap";
+import { useFetch } from "../hooks/useFetch";
 
 export const StationPage = () => {
-    const [stationDetails, setStationDetails] = useState<StationDetails>();
     const { stationId } = useParams<{ stationId: string }>();
-
-    useEffect(() => {
-        const fetchStationDetails = async () => {
-            const stationDetails = await axios.get(`/station/${stationId}`);
-            setStationDetails(stationDetails.data);
-        };
-
-        fetchStationDetails();
-    }, [stationId]);
+    const {
+        data: stationDetails,
+        isLoading,
+        error,
+    } = useFetch<StationDetails | null>(`/station/${stationId}`);
 
     const convertToMinutes = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60);
@@ -32,20 +26,18 @@ export const StationPage = () => {
 
     return (
         <>
-            <div className="text-center my-12">
-                <h1 className="text-slate-800 text-5xl font-bold">
-                    {stationDetails
-                        ? stationDetails.stationData.name
-                        : "Loading..."}
-                </h1>
-                <h2 className="text-slate-600 text-3xl pt-2">
-                    {stationDetails
-                        ? stationDetails.stationData.address
-                        : "Loading..."}
-                </h2>
-            </div>
+            {isLoading && <p>Loading...</p>}
+            {!!error && <p>{error.message}</p>}
             {stationDetails && (
                 <>
+                    <div className="text-center my-12">
+                        <h1 className="text-slate-800 text-5xl font-bold">
+                            {stationDetails.stationData.name}
+                        </h1>
+                        <h2 className="text-slate-600 text-3xl pt-2">
+                            {stationDetails.stationData.address}
+                        </h2>
+                    </div>
                     <div className="grid justify-center sm:grid-cols-2 lg:grid-cols-3 max-w-[1200px] gap-4 p-8 mx-auto">
                         <div className="col-span-2 row-span-2">
                             <PeakTimesChart
