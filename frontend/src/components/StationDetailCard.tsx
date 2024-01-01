@@ -10,7 +10,7 @@ export const StationDetailCard: React.FC<StationDetailCardProps> = ({
     values,
 }) => {
     return (
-        <div className="flex flex-col justify-between text-center bg-blue-600 md:h-44 h-36 text-white rounded-xl p-4 shadow">
+        <div className="flex flex-col justify-between text-center bg-yellow-500 md:h-44 h-36 text-neutral-800 rounded-xl p-4 shadow">
             <React.Fragment key={title}>
                 <h1 className="md:text-3xl text-xl font-bold">{title}</h1>
                 {values.map((value) => (
