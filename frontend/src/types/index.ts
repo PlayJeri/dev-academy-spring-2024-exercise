@@ -1,7 +1,7 @@
 export type InfoBannerData = {
-    numberOfStations: string;
-    numberOfJourneys: string;
-    totalDistance: string;
+    numberOfStations: number;
+    numberOfJourneys: number;
+    totalDistance: number;
 };
 
 export type JourneyStats = {
