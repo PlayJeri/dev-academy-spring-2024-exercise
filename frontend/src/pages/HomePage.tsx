@@ -1,37 +1,36 @@
 import { HomePageInfoCard } from "../components/HomePageInfoCard";
 import { StatInfoBanner } from "../components/StatInfoBanner";
 import { useState, useEffect } from "react";
-import { InfoBannerData, JourneyStats } from "../types";
-import axios from "axios";
+import { InfoBannerData, JourneyStats, StationData } from "../types";
+import { useFetch } from "../hooks/useFetch";
 
 export const HomePage = () => {
+    const { data: stationsData } = useFetch<StationData[] | null>("/station");
+    const { data: journeyData } = useFetch<JourneyStats | null>(
+        "/journey/stats"
+    );
+
     const [infoBannerData, setInfoBannerData] = useState<InfoBannerData>();
 
     useEffect(() => {
-        const fetchInfoBannerData = async () => {
-            const numberOfStations = await axios.get("/station");
-            const journeyData: JourneyStats = (
-                await axios.get("/journey/stats")
-            ).data;
-
-            setInfoBannerData({
-                numberOfStations: numberOfStations.data.length,
-                numberOfJourneys: Number(
-                    journeyData.numberOfJourneys
-                ).toLocaleString(),
-                totalDistance: Math.round(
-                    journeyData.totalDistance / 1000
-                ).toLocaleString(),
-            });
-        };
-
-        fetchInfoBannerData();
-    }, []);
+        if (stationsData && journeyData) {
+            const infoBannerData: InfoBannerData = {
+                numberOfStations: stationsData.length,
+                numberOfJourneys: journeyData.numberOfJourneys,
+                totalDistance: journeyData.totalDistance,
+            };
+            setInfoBannerData(infoBannerData);
+        }
+    }, [stationsData, journeyData]);
 
     return (
         <div className="flex flex-col items-center h-screen">
             <HomePageInfoCard />
-            {infoBannerData && <StatInfoBanner stats={infoBannerData} />}
+            {infoBannerData ? (
+                <StatInfoBanner stats={infoBannerData} />
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     );
 };
