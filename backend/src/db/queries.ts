@@ -70,3 +70,31 @@ export const getPeakTimes = (stationId: string) => {
     );
     return peakTimes;
 };
+
+export const getAllJourneys = (
+    cursor: number,
+    limit: number,
+    order: string,
+    filter: string
+) => {
+    let query = `
+        SELECT 
+        journey.*,
+        departure_station.station_name as departure_station_name, 
+        return_station.station_name as return_station_name 
+        FROM journey
+        INNER JOIN station as departure_station ON journey.departure_station_id = departure_station.id
+        INNER JOIN station as return_station ON journey.return_station_id = return_station.id
+    `;
+
+    if (cursor) {
+        query += ` WHERE journey.id > ${cursor}`;
+    }
+    if (filter) {
+        query += ` ORDER by ${filter} ${order}`;
+    }
+    query += ` LIMIT ${limit}`;
+
+    const response = db.query(query);
+    return response;
+};
