@@ -39,3 +39,18 @@ type topThreeDestination = {
     stationName: string;
     numberOfJourneys: number;
 };
+
+type JourneyData = {
+    id: number;
+    departureDateTime: Date;
+    returnDateTime: Date;
+    departureStationName: string;
+    returnStationName: string;
+    distance: number;
+    duration: number;
+};
+
+export type JourneysResponse = {
+    nextCursor: number | null;
+    journeys: JourneyData[];
+};
