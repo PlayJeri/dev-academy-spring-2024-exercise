@@ -18,7 +18,7 @@ export function NavBar() {
                     <Link to={"/stations"}>Stations</Link>
                 </h2>
                 <h2 className="text-lg linkHover hover:text-xl font-light hidden sm:block">
-                    Journeys
+                    <Link to={"/journeys"}>Journeys</Link>
                 </h2>
                 <input
                     className="hidden sm:block font-semibold text-slate-600 rounded-md border-2 p-1 border-gray-300 focus:outline-none focus:border-blue-700"

@@ -3,12 +3,12 @@ export type JourneyStats = {
     numberOfJourneys: number;
 };
 
-type JourneyData = {
+export type JourneyData = {
     id: number;
     departureDateTime: Date;
     returnDateTime: Date;
-    departureStationId: number;
-    returnStationId: number;
+    departureStationName: number;
+    returnStationName: number;
     distance: number;
     duration: number;
 };

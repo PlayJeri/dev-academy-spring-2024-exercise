@@ -7,6 +7,7 @@ import {
     getAvgStartedJourneyDuration,
     getTopThreeDestinations,
     getPeakTimes,
+    getAllJourneys,
 } from "./queries";
 
 export default {
@@ -19,5 +20,6 @@ export default {
         getAvgStartedJourneyDuration,
         getTopThreeDestinations,
         getPeakTimes,
+        getAllJourneys,
     },
 };
