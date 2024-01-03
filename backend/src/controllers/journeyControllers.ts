@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
 import pool from "../db";
-import { GetAllJourneysResponse, JourneyStats } from "../types/Journey";
+import {
+    GetAllJourneysResponse,
+    JourneyStats,
+    JourneyData,
+} from "../types/Journey";
 
 const db = pool.pool;
+const queries = pool.queries;
 
 /**
  * Get journey statistics
@@ -33,21 +38,25 @@ export const getJourneyStats = async (req: Request, res: Response) => {
  */
 export const getAllJourneys = async (req: Request, res: Response) => {
     try {
-        console.log("getAllJourneys");
-        const { cursor, limit = 50, order = "DESC", filter } = req.query;
-        let query = "SELECT * FROM journey";
+        const { cursor, limit = 100, order = "DESC", filter } = req.query;
+        const query = queries.getAllJourneys(
+            Number(cursor),
+            limit as number,
+            order as string,
+            filter as string
+        );
 
-        if (cursor) {
-            query += ` WHERE id > ${cursor}`;
-        }
-        if (filter) {
-            query += ` ORDER by ${filter} ${order}`;
-        }
-        query += ` LIMIT ${limit}`;
-        console.log(query);
+        const response = await query;
+        const data: JourneyData[] = response.rows.map((row) => ({
+            id: row.id,
+            departureDateTime: row.departure_date_time,
+            returnDateTime: row.return_date_time,
+            departureStationName: row.departure_station_name,
+            returnStationName: row.return_station_name,
+            distance: row.distance,
+            duration: row.duration,
+        }));
 
-        const response = await db.query(query);
-        const data = response.rows;
         const newCursor = data.length > 0 ? data[data.length - 1].id : null;
 
         const result: GetAllJourneysResponse = {
