@@ -35,11 +35,8 @@ export const StationList: React.FC<StationListProps> = ({
 
     const renderStationLink = (station: StationData) => {
         return (
-            <Link to={`/station/${station.id}`}>
-                <div
-                    key={station.id}
-                    className="p-4 bg-yellow-500 rounded-xl shadow"
-                >
+            <Link to={`/station/${station.id}`} key={station.id}>
+                <div className="p-4 bg-yellow-500 rounded-xl shadow">
                     <h2 className="font-bold text-xl text-neutral-800">
                         {station.name}
                     </h2>
@@ -66,6 +63,7 @@ export const StationList: React.FC<StationListProps> = ({
                     handleClick={() => handlePageChange(currentPage + 1)}
                 />
                 <button
+                    key="order"
                     className="bg-slate-100 text-slate-800 px-4 py-2 rounded shadow"
                     onClick={() => handleOrderChange()}
                 >
