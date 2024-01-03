@@ -4,6 +4,7 @@ import redisClient from "../redis";
 import pool from "../db";
 
 const db = pool.pool;
+const queries = pool.queries;
 
 /**
  * Get all stations in the database
@@ -58,55 +59,32 @@ export const getAllStations = async (req: Request, res: Response) => {
  */
 export const getStationById = async (req: Request, res: Response) => {
     try {
+        const cacheKey = `station:${req.params.id}`;
+        const cachedStation = await redisClient.get(cacheKey);
+
+        if (cachedStation) {
+            console.log("using cached station");
+            return res.status(200).json(JSON.parse(cachedStation));
+        }
+
         const stationId = req.params.id;
 
-        const stationData = db.query("SELECT * FROM station WHERE id = $1", [
-            stationId,
-        ]);
+        const stationData = queries.getStationData(stationId);
 
-        const numberOfStartedJourneys = db.query(
-            "SELECT COUNT(*) FROM journey WHERE departure_station_id = $1",
-            [stationId]
-        );
+        const numberOfStartedJourneys =
+            queries.getNumberOfStartedJourneys(stationId);
 
-        const numberOfEndedJourneys = db.query(
-            "SELECT COUNT(*) FROM journey WHERE return_station_id = $1",
-            [stationId]
-        );
+        const numberOfEndedJourneys =
+            queries.getNumberOfEndedJourneys(stationId);
 
-        const avgStartedJourneyDistance = db.query(
-            "SELECT AVG(distance) FROM journey WHERE departure_station_id = $1",
-            [stationId]
-        );
+        const avgStartedJourneyDistance =
+            queries.getAvgStartedJourneyDistance(stationId);
 
-        const avgStartedJourneyDuration = db.query(
-            "SELECT AVG(duration) FROM journey WHERE departure_station_id = $1",
-            [stationId]
-        );
+        const avgStartedJourneyDuration =
+            queries.getAvgStartedJourneyDuration(stationId);
 
-        const topThreeDestinations = db.query(
-            `
-            SELECT station.station_name, journey.return_station_id, COUNT(*)
-            FROM journey
-            INNER JOIN station ON station.id = journey.return_station_id
-            WHERE departure_station_id = $1
-            GROUP BY return_station_id, station.station_name
-            ORDER BY COUNT(*)
-            DESC LIMIT 3
-        `,
-            [stationId]
-        );
-
-        const peakTimes = db.query(
-            `
-            SELECT EXTRACT(HOUR FROM departure_date_time) AS hour, COUNT(*)
-            FROM journey
-            WHERE departure_station_id = $1
-            GROUP BY hour
-            ORDER BY hour
-            `,
-            [stationId]
-        );
+        const topThreeDestinations = queries.getTopThreeDestinations(stationId);
+        const peakTimes = queries.getPeakTimes(stationId);
 
         const [
             stationDataResult,
@@ -160,6 +138,8 @@ export const getStationById = async (req: Request, res: Response) => {
         };
 
         res.status(200).json(data);
+
+        await redisClient.set(cacheKey, JSON.stringify(data), "EX", 60 * 60); // 1 hour
     } catch (error) {
         console.error("Error getting station by id", error);
         res.status(500).send("Internal server error");
