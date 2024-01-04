@@ -10,3 +10,6 @@
 
 # dotenv environment variable files
 .env
+
+# redis
+dump.rdb
