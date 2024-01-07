@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useFetch } from "../hooks/useFetch";
+import { SortableHeader } from "./SortableHeader";
+import { convertDistance, convertDuration } from "../utils";
 
 type Journey = {
     departureStationName: string;
@@ -51,36 +53,70 @@ export const JourneysTable = () => {
                     <thead>
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <button
-                                    onClick={() => {
-                                        if (
-                                            filter === "departure_station_name"
-                                        ) {
-                                            order === "asc"
-                                                ? setOrder("desc")
-                                                : setOrder("asc");
-                                        } else {
-                                            setFilter("departure_station_name");
-                                        }
-                                    }}
+                                <SortableHeader
+                                    filter={filter}
+                                    setFilter={setFilter}
+                                    order={order}
+                                    setOrder={setOrder}
+                                    filterValue="departure_station_name"
                                 >
                                     Departure station
-                                </button>
+                                </SortableHeader>
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Return station
+                                <SortableHeader
+                                    filter={filter}
+                                    setFilter={setFilter}
+                                    order={order}
+                                    setOrder={setOrder}
+                                    filterValue="return_station_name"
+                                >
+                                    Return station
+                                </SortableHeader>
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Duration
+                                <SortableHeader
+                                    filter={filter}
+                                    setFilter={setFilter}
+                                    order={order}
+                                    setOrder={setOrder}
+                                    filterValue="duration"
+                                >
+                                    Duration
+                                </SortableHeader>
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Distance
+                                <SortableHeader
+                                    filter={filter}
+                                    setFilter={setFilter}
+                                    order={order}
+                                    setOrder={setOrder}
+                                    filterValue="distance"
+                                >
+                                    Distance
+                                </SortableHeader>
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Departure Time
+                                <SortableHeader
+                                    filter={filter}
+                                    setFilter={setFilter}
+                                    order={order}
+                                    setOrder={setOrder}
+                                    filterValue="departure_date_time"
+                                >
+                                    Departure Time
+                                </SortableHeader>
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Return Time
+                                <SortableHeader
+                                    filter={filter}
+                                    setFilter={setFilter}
+                                    order={order}
+                                    setOrder={setOrder}
+                                    filterValue="return_date_time"
+                                >
+                                    Return Time
+                                </SortableHeader>
                             </th>
                         </tr>
                     </thead>
@@ -94,10 +130,10 @@ export const JourneysTable = () => {
                                     {journey.returnStationName}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    {journey.duration}
+                                    {convertDuration(journey.duration)}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    {journey.distance}
+                                    {convertDistance(journey.distance)}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     {new Date(
