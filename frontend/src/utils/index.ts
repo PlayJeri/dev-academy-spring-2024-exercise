@@ -11,6 +11,7 @@ export const convertDuration = (duration: Seconds): string => {
 
 export const convertDistance = (distance: Meters): string => {
     const kilometers = distance / 1000;
+    if (kilometers < 1) return distance ? `${distance}m` : "0m";
 
-    return `${kilometers.toFixed(1)}km`;
+    return `${kilometers.toFixed(2)}km`;
 };
