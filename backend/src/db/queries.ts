@@ -80,13 +80,11 @@ export const getPeakTimes = (stationId: string) => {
 };
 
 export const getAllJourneys = (
-    cursor: NextCursor | null,
+    nextCursor: NextCursor | null,
     limit: number,
     order: string,
     filter: string
 ) => {
-    console.log(cursor);
-    console.log(filter);
     let query = `
         SELECT
         journey.*,
@@ -97,27 +95,25 @@ export const getAllJourneys = (
         INNER JOIN station as return_station ON journey.return_station_id = return_station.id
     `;
 
-    if (cursor) {
+    if (nextCursor) {
         switch (filter) {
             case "departure_date_time":
-                query += ` WHERE (departure_date_time, journey.id) > ('${cursor.filter}', ${cursor.id})`;
+                query += ` WHERE (departure_date_time, journey.id) > ('${nextCursor.filter}', ${nextCursor.id})`;
                 break;
             case "return_date_time":
-                query += ` WHERE (return_date_time, journey.id) > ('${cursor.filter}', ${cursor.id})`;
+                query += ` WHERE (return_date_time, journey.id) > ('${nextCursor.filter}', ${nextCursor.id})`;
                 break;
             case "departure_station_name":
-                query += ` WHERE (departure_station_name, journey.id) > ('${cursor.filter}', ${cursor.id})`;
+                query += ` WHERE (departure_station_name, journey.id) > ('${nextCursor.filter}', ${nextCursor.id})`;
                 break;
             case "return_station_name":
-                query += ` WHERE (return_station_name, journey.id) > ('${cursor.filter}', ${cursor.id})`;
+                query += ` WHERE (return_station_name, journey.id) > ('${nextCursor.filter}', ${nextCursor.id})`;
                 break;
             case "distance":
-                query += ` WHERE (distance, journey.id) > (${cursor.filter}, ${cursor.id})`;
+                query += ` WHERE (distance, journey.id) > (${nextCursor.filter}, ${nextCursor.id})`;
                 break;
             case "duration":
-                console.log("JEEJOO");
-                // query += ` WHERE (journey.duration, journey.id) > (${cursor.filter}, ${cursor.id})`;
-                query += ` WHERE journey.id > ${cursor.id}`;
+                query += ` WHERE (duration, journey.id) > (${nextCursor.filter}, ${nextCursor.id})`;
                 break;
         }
     }

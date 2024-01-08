@@ -39,8 +39,9 @@ export const getJourneyStats = async (req: Request, res: Response) => {
 export const getAllJourneys = async (req: Request, res: Response) => {
     try {
         const { cursor, limit = 100, order = "DESC", filter } = req.query;
+        const nextCursor = cursor ? JSON.parse(cursor as string) : null;
         const query = queries.getAllJourneys(
-            cursor as any,
+            nextCursor as any,
             limit as number,
             order as string,
             filter as string
