@@ -22,9 +22,7 @@ export const getAllStations = async (req: Request, res: Response) => {
         }
         console.log("using db");
 
-        const result = await db.query(
-            `SELECT * FROM station ORDER BY station_name DESC`
-        );
+        const result = await queries.getAllStations();
 
         const data: StationData[] = result.rows.map((row) => ({
             id: row.id,
