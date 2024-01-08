@@ -14,6 +14,11 @@ export type JourneyData = {
 };
 
 export type GetAllJourneysResponse = {
-    nextCursor: number | null;
+    nextCursor: NextCursor;
     journeys: JourneyData[];
+};
+
+export type NextCursor = {
+    id: number | null;
+    filter: string | number | null;
 };
