@@ -2,6 +2,13 @@ import { pool } from "./connection";
 
 const db = pool;
 
+export const getAllStations = () => {
+    const allStations = db.query(
+        `SELECT * FROM station ORDER BY station_name ASC`
+    );
+    return allStations;
+};
+
 export const getStationData = (stationId: string) => {
     const stationData = db.query("SELECT * FROM station WHERE id = $1", [
         stationId,
