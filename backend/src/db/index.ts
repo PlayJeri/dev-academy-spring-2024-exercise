@@ -1,5 +1,6 @@
 import { pool } from "./connection";
 import {
+    getAllStations,
     getStationData,
     getNumberOfStartedJourneys,
     getNumberOfEndedJourneys,
@@ -13,6 +14,7 @@ import {
 export default {
     pool,
     queries: {
+        getAllStations,
         getStationData,
         getNumberOfStartedJourneys,
         getNumberOfEndedJourneys,
