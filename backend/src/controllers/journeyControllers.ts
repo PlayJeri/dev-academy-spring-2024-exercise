@@ -38,9 +38,9 @@ export const getJourneyStats = async (req: Request, res: Response) => {
  */
 export const getAllJourneys = async (req: Request, res: Response) => {
     try {
-        const { cursor, limit = 100, order = "DESC", filter } = req.query;
+        const { offset, limit = 100, order = "DESC", filter } = req.query;
         const query = queries.getAllJourneys(
-            Number(cursor),
+            Number(offset),
             limit as number,
             order as string,
             filter as string
@@ -57,14 +57,7 @@ export const getAllJourneys = async (req: Request, res: Response) => {
             duration: row.duration,
         }));
 
-        const newCursor = data.length > 0 ? data[data.length - 1].id : null;
-
-        const result: GetAllJourneysResponse = {
-            nextCursor: newCursor,
-            journeys: data,
-        };
-
-        return res.json(result);
+        return res.json(data);
     } catch (error) {
         console.error("Error in getAllJourneys", error);
         res.status(500).json({ error: "Internal server error" });
