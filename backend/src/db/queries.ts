@@ -72,7 +72,7 @@ export const getPeakTimes = (stationId: string) => {
 };
 
 export const getAllJourneys = (
-    cursor: number,
+    offset: number,
     limit: number,
     order: string,
     filter: string
@@ -87,11 +87,15 @@ export const getAllJourneys = (
         INNER JOIN station as return_station ON journey.return_station_id = return_station.id
     `;
 
-    if (cursor) {
-        query += ` WHERE journey.id > ${cursor}`;
-    }
     if (filter) {
-        query += ` ORDER by ${filter} ${order}`;
+        if (filter === "distance" || filter === "duration") {
+            query += ` ORDER BY COALESCE(${filter}, 0) ${order}`;
+        } else {
+            query += ` ORDER BY ${filter} ${order}`;
+        }
+    }
+    if (offset) {
+        query += ` OFFSET ${offset}`;
     }
     query += ` LIMIT ${limit}`;
 
