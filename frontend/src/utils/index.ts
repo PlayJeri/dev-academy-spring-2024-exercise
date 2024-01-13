@@ -9,9 +9,13 @@ export const convertDuration = (duration: Seconds): string => {
     return `${hours}h ${minutes}m ${seconds}s`;
 };
 
-export const convertDistance = (distance: Meters): string => {
+export const convertDistance = (
+    distance: Meters,
+    accurate: boolean = true
+): string => {
     const kilometers = distance / 1000;
     if (kilometers < 1) return distance ? `${distance}m` : "0m";
+    if (!accurate) return `${Math.floor(kilometers).toLocaleString()}km`;
 
     return `${kilometers.toFixed(2)}km`;
 };
