@@ -84,6 +84,24 @@ export const getAllJourneys = (
     order: string,
     filter: string
 ) => {
+    const validFilters = [
+        "departure_date_time",
+        "return_date_time",
+        "distance",
+        "duration",
+        "departure_station_name",
+        "return_station_name",
+    ];
+    const validOrders = ["ASC", "DESC"];
+
+    if (!validOrders.includes(order.toUpperCase())) {
+        order = "DESC";
+    }
+
+    if (!validFilters.includes(filter)) {
+        filter = "departure_station_name";
+    }
+    let queryParams = [];
     let query = `
         SELECT 
         journey.*,
@@ -102,10 +120,12 @@ export const getAllJourneys = (
         }
     }
     if (offset) {
-        query += ` OFFSET ${offset}`;
+        query += ` OFFSET $2`;
+        queryParams.push(offset);
     }
-    query += ` LIMIT ${limit}`;
+    query += ` LIMIT $1`;
+    queryParams.push(limit);
 
-    const response = db.query(query);
+    const response = db.query(query, queryParams);
     return response;
 };
