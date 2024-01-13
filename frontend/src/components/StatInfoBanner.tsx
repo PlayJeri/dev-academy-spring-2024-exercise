@@ -2,6 +2,7 @@ import LocationIcon from "../assets/LocationIcon.svg?react";
 import BikerIcon from "../assets/BikerIcon.svg?react";
 import RouteIcon from "../assets/RouteIcon.svg?react";
 import { InfoBannerData } from "../types";
+import { convertDistance } from "../utils";
 
 interface StatItemProps {
     Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -42,7 +43,7 @@ export const StatInfoBanner: React.FC<StatInfoBannerProps> = ({ stats }) => {
             <StatItem
                 Icon={RouteIcon}
                 label={"Kilometers"}
-                count={stats.totalDistance.toLocaleString()}
+                count={convertDistance(stats.totalDistance, false)}
             />
         </div>
     );
