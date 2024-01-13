@@ -3,8 +3,17 @@ import BikeIcon from "../assets/BikeIcon.svg?react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MobileNavBar } from "./MobileNavBar";
 import { useState } from "react";
+import { useFetch } from "../hooks/useFetch";
+import { StationData } from "../types";
+import { SearchBar } from "./SearchBar";
 
 export function NavBar() {
+    const {
+        data: stationsData,
+        setData: setStationData,
+        isLoading,
+        error,
+    } = useFetch<StationData[] | null>("/station");
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
     return (
@@ -20,10 +29,11 @@ export function NavBar() {
                 <h2 className="text-lg linkHover hover:text-xl font-light hidden sm:block">
                     <Link to={"/journeys"}>Journeys</Link>
                 </h2>
-                <input
-                    className="hidden sm:block font-semibold text-slate-600 rounded-md border-2 p-1 border-gray-300 focus:outline-none focus:border-blue-700"
-                    type="text"
-                    placeholder="Search..."
+                <SearchBar
+                    stations={stationsData}
+                    setStations={setStationData}
+                    isLoading={isLoading}
+                    error={error}
                 />
                 <div
                     className="block sm:hidden"
