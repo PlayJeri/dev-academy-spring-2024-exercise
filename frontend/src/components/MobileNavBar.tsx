@@ -12,7 +12,7 @@ export const MobileNavBar: React.FC<MobileNavBarProps> = ({
     visible,
 }) => {
     return (
-        <div className="sticky top-[64px] flex flex-col sm:hidden items-center w-full gap-4 bg-blue-600">
+        <div className="sticky top-[64px] flex flex-col sm:hidden items-center w-full gap-4 bg-blue-600 z-10">
             <div className="flex w-full justify-around text-white">
                 <h2 className="text-lg linkHover hover:text-xl font-light">
                     <Link to={"/stations"}>Stations</Link>
