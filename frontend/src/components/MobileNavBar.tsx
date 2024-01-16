@@ -1,20 +1,28 @@
 import { Link } from "react-router-dom";
+import { StationData } from "../types";
+import { SearchBar } from "./SearchBar";
 
-export const MobileNavBar = () => {
+type MobileNavBarProps = {
+    stations: StationData[] | null;
+    visible: boolean;
+};
+
+export const MobileNavBar: React.FC<MobileNavBarProps> = ({
+    stations,
+    visible,
+}) => {
     return (
         <div className="sticky top-[64px] flex flex-col sm:hidden items-center w-full gap-4 bg-blue-600">
-            <input
-                className="font-semibold text-slate-600  mt-4 w-3/4 rounded-md border-2 p-1 border-gray-300 focus:outline-none focus:border-blue-700"
-                type="text"
-                placeholder="Search..."
-            />
-            <div className="flex w-full justify-around text-white pb-4">
+            <div className="flex w-full justify-around text-white">
                 <h2 className="text-lg linkHover hover:text-xl font-light">
                     <Link to={"/stations"}>Stations</Link>
                 </h2>
                 <h2 className="text-lg linkHover hover:text-xl font-light">
                     Journeys
                 </h2>
+            </div>
+            <div className="mb-4">
+                <SearchBar stations={stations} visible={visible} />
             </div>
         </div>
     );

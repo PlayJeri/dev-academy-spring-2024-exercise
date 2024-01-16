@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StationData } from "../types";
-import { AxiosError } from "axios";
 import { Link } from "react-router-dom";
 
 type SearchBarProps = {
     stations: StationData[] | null;
-    setStations: React.Dispatch<React.SetStateAction<StationData[] | null>>;
-    isLoading: boolean;
-    error: AxiosError | null;
+    visible: boolean;
 };
 
-export const SearchBar: React.FC<SearchBarProps> = ({ stations }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ stations, visible }) => {
     const [stationSearch, setStationSearch] = useState("");
     const [filteredStations, setFilteredStations] = useState<StationData[]>([]);
     const [isFocused, setIsFocused] = useState(false);
@@ -30,7 +27,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({ stations }) => {
     return (
         <div className="relative">
             <input
-                className="hidden sm:block font-semibold text-slate-600 rounded-md border-2 p-1 border-gray-300 focus:outline-none focus:border-blue-700"
+                className={`${
+                    visible ? "" : "hidden"
+                } font-semibold text-slate-600 rounded-md border-2 p-1 border-gray-300 focus:outline-none focus:border-blue-700`}
                 type="text"
                 placeholder="Search..."
                 value={stationSearch}

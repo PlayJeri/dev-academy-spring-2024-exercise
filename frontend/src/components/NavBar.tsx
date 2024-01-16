@@ -8,12 +8,7 @@ import { StationData } from "../types";
 import { SearchBar } from "./SearchBar";
 
 export function NavBar() {
-    const {
-        data: stationsData,
-        setData: setStationData,
-        isLoading,
-        error,
-    } = useFetch<StationData[] | null>("/station");
+    const { data: stationsData } = useFetch<StationData[] | null>("/station");
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
     return (
@@ -29,12 +24,12 @@ export function NavBar() {
                 <h2 className="text-lg linkHover hover:text-xl font-light hidden sm:block">
                     <Link to={"/journeys"}>Journeys</Link>
                 </h2>
-                <SearchBar
-                    stations={stationsData}
-                    setStations={setStationData}
-                    isLoading={isLoading}
-                    error={error}
-                />
+                <div className="hidden sm:block">
+                    <SearchBar
+                        stations={stationsData}
+                        visible={!mobileNavOpen}
+                    />
+                </div>
                 <div
                     className="block sm:hidden"
                     onClick={() => setMobileNavOpen(!mobileNavOpen)}
@@ -42,7 +37,9 @@ export function NavBar() {
                     <MenuIcon fontSize="large" />
                 </div>
             </div>
-            {mobileNavOpen && <MobileNavBar />}
+            {mobileNavOpen && (
+                <MobileNavBar stations={stationsData} visible={mobileNavOpen} />
+            )}
         </>
     );
 }
