@@ -38,108 +38,78 @@ export const JourneysTable = () => {
             {isLoading && <p>Loading...</p>}
             {error && <p>{error.message}</p>}
             {data && (
-                <div>
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead>
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <SortableHeader
-                                        filter={filter}
-                                        setFilter={setFilter}
-                                        order={order}
-                                        setOrder={setOrder}
-                                        filterValue="departure_station_name"
-                                    >
-                                        Departure station
-                                    </SortableHeader>
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <SortableHeader
-                                        filter={filter}
-                                        setFilter={setFilter}
-                                        order={order}
-                                        setOrder={setOrder}
-                                        filterValue="return_station_name"
-                                    >
-                                        Return station
-                                    </SortableHeader>
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <SortableHeader
-                                        filter={filter}
-                                        setFilter={setFilter}
-                                        order={order}
-                                        setOrder={setOrder}
-                                        filterValue="duration"
-                                    >
-                                        Duration
-                                    </SortableHeader>
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <SortableHeader
-                                        filter={filter}
-                                        setFilter={setFilter}
-                                        order={order}
-                                        setOrder={setOrder}
-                                        filterValue="distance"
-                                    >
-                                        Distance
-                                    </SortableHeader>
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <SortableHeader
-                                        filter={filter}
-                                        setFilter={setFilter}
-                                        order={order}
-                                        setOrder={setOrder}
-                                        filterValue="departure_date_time"
-                                    >
-                                        Departure Time
-                                    </SortableHeader>
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <SortableHeader
-                                        filter={filter}
-                                        setFilter={setFilter}
-                                        order={order}
-                                        setOrder={setOrder}
-                                        filterValue="return_date_time"
-                                    >
-                                        Return Time
-                                    </SortableHeader>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {data.map((journey, index) => (
-                                <tr key={index}>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        {journey.departureStationName}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        {journey.returnStationName}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        {convertDuration(journey.duration)}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        {convertDistance(journey.distance)}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        {new Date(
-                                            journey.departureDateTime
-                                        ).toLocaleString()}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        {new Date(
-                                            journey.returnDateTime
-                                        ).toLocaleString()}
-                                    </td>
+                <>
+                    <div className="flex flex-col items-center justify-center overflow-x-auto">
+                        <table className="mx-auto max-w-screen-2xl divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th className="table-header">
+                                        <SortableHeader
+                                            filter={filter}
+                                            setFilter={setFilter}
+                                            order={order}
+                                            setOrder={setOrder}
+                                            filterValue="departure_station_name"
+                                        >
+                                            Departure station
+                                        </SortableHeader>
+                                    </th>
+                                    <th className="table-header">
+                                        <SortableHeader
+                                            filter={filter}
+                                            setFilter={setFilter}
+                                            order={order}
+                                            setOrder={setOrder}
+                                            filterValue="return_station_name"
+                                        >
+                                            Return station
+                                        </SortableHeader>
+                                    </th>
+                                    <th className="table-header">
+                                        <SortableHeader
+                                            filter={filter}
+                                            setFilter={setFilter}
+                                            order={order}
+                                            setOrder={setOrder}
+                                            filterValue="duration"
+                                        >
+                                            Duration
+                                        </SortableHeader>
+                                    </th>
+                                    <th className="table-header">
+                                        <SortableHeader
+                                            filter={filter}
+                                            setFilter={setFilter}
+                                            order={order}
+                                            setOrder={setOrder}
+                                            filterValue="distance"
+                                        >
+                                            Distance
+                                        </SortableHeader>
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <div className="flex justify-center">
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {data.map((journey, index) => (
+                                    <tr key={index}>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {journey.departureStationName}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {journey.returnStationName}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {convertDuration(journey.duration)}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            {convertDistance(journey.distance)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="flex justify-around w-1/2 sm:w-1/3 md:w-1/4 lg:max-w-screen-xl my-6 mx-auto">
                         <PaginationButton
                             condition={offset <= 0}
                             buttonText="Previous"
@@ -155,7 +125,7 @@ export const JourneysTable = () => {
                             handleClick={() => setOffset(offset + limit)}
                         />
                     </div>
-                </div>
+                </>
             )}
         </>
     );
